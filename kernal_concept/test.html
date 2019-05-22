@@ -87,43 +87,100 @@
       // setInterval(tick, 1000);
 
       // 带有 state 的 class 组件
-      class Clock extends React.Component {
-          constructor(props) {
-              super(props); 
-              this.state = {date: new Date()};
-          }
+      // class Clock extends React.Component {
+      //     constructor(props) {
+      //         super(props); 
+      //         this.state = {date: new Date()};
+      //     }
 
-          tick() {
-              this.setState({
-                  date: new Date(),
-              });
-          }
+      //     tick() {
+      //         this.setState({
+      //             date: new Date(),
+      //         });
+      //     }
 
-          componentDidMount () {
-              this.t1 = setInterval(
-                () => this.tick(),
-                1000
-              );
-          }
+      //     componentDidMount () {
+      //         this.t1 = setInterval(
+      //           () => this.tick(),
+      //           1000
+      //         );
+      //     }
 
-          componentWillUnmount () {
-              clearInterval(this.t1);
-          }
+      //     componentWillUnmount () {
+      //         clearInterval(this.t1);
+      //     }
 
-          render () {
-              return (
-                  <div>
-                      <h1>Clock</h1>
-                      <h2>it is {this.state.date.toLocaleTimeString()}</h2>
-                  </div>
-              )
-          }
+      //     render () {
+      //         return (
+      //             <div>
+      //                 <h1>Clock</h1>
+      //                 <h2>it is {this.state.date.toLocaleTimeString()}</h2>
+      //             </div>
+      //         )
+      //     }
+      // }
+
+      // ReactDOM.render(
+      //   <Clock />,
+      //   document.getElementById('root')
+      // );
+
+      // 事件处理
+      class Toggle extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {isToggleOn: true};
+
+          // 为了在回调中使用 `this`，这个绑定是必不可少的
+          this.handleClick = this.handleClick.bind(this);
+        }
+
+        handleClick() {
+          this.setState(state => ({
+            isToggleOn: !state.isToggleOn
+          }));
+        }
+
+        render() {
+          return (
+            <button onClick={this.handleClick}>
+              {this.state.isToggleOn ? 'ON' : 'OFF'}
+            </button>
+          );
+        }
+    }
+
+    class LoggingButton extends React.Component {
+      constructor(props) {
+          super(props);
+          this.state = {counter: 1};
+        }
+      // 此语法确保 `handleClick` 内的 `this` 已被绑定。
+      // 注意: 这是 *实验性* 语法。
+      handleClick = (con) => {
+        this.setState({
+          counter: this.state.counter + con
+        });
       }
 
-      ReactDOM.render(
-        <Clock />,
-        document.getElementById('root')
-      );
+      render() {
+        return (
+          <button onClick={this.handleClick.bind(this, 2)}> 
+            {this.state.counter}
+          </button>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <div>
+        <h1>public class fields 语法 绑定方法，然后通过 bind 方式传递参数</h1>
+        <LoggingButton />
+        <h1>bind 方式绑定方法</h1>
+        <Toggle />
+      </div>,
+      document.getElementById('root')
+    );
 
     </script>
     

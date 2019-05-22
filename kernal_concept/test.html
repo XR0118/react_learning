@@ -48,23 +48,80 @@
       // setInterval(tick, 1000);
 
       // 组件和 props
-      function Welcome(props) {
-        return <h1>Hello, {props.name}</h1>;
+      // function Welcome(props) {
+      //   return <h1>Hello, {props.name}</h1>;
+      // }
+
+      // function App(){
+      //   return (
+      //     <div>
+      //       <Welcome name="Sara" />
+      //       <Welcome name="Cahal" />
+      //       <Welcome name="Edite" />
+      //     </div>
+      //   );
+      // }
+
+      // const element = <Welcome name="Sara" />;
+      // ReactDOM.render(
+      //   <App />,
+      //   document.getElementById('root')
+      // );
+
+      // State和生命周期
+      // function Clock(props) {
+      //     return (
+      //       <div>
+      //         <h1>this is a clock</h1>
+      //         <h2> It is {props.date.toLocaleTimeString()} </h2>
+      //       </div>
+      //     );
+      // }
+      // function tick() {
+      //     ReactDOM.render(
+      //         <Clock date={new Date()} />,
+      //         document.getElementById('root')
+      //     )
+      // }
+
+      // setInterval(tick, 1000);
+
+      // 带有 state 的 class 组件
+      class Clock extends React.Component {
+          constructor(props) {
+              super(props); 
+              this.state = {date: new Date()};
+          }
+
+          tick() {
+              this.setState({
+                  date: new Date(),
+              });
+          }
+
+          componentDidMount () {
+              this.t1 = setInterval(
+                () => this.tick(),
+                1000
+              );
+          }
+
+          componentWillUnmount () {
+              clearInterval(this.t1);
+          }
+
+          render () {
+              return (
+                  <div>
+                      <h1>Clock</h1>
+                      <h2>it is {this.state.date.toLocaleTimeString()}</h2>
+                  </div>
+              )
+          }
       }
 
-      function App(){
-        return (
-          <div>
-            <Welcome name="Sara" />
-            <Welcome name="Cahal" />
-            <Welcome name="Edite" />
-          </div>
-        );
-      }
-
-      const element = <Welcome name="Sara" />;
       ReactDOM.render(
-        <App />,
+        <Clock />,
         document.getElementById('root')
       );
 

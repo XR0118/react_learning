@@ -126,59 +126,127 @@
       // );
 
       // 事件处理
-      class Toggle extends React.Component {
-        constructor(props) {
-          super(props);
-          this.state = {isToggleOn: true};
+    //   class Toggle extends React.Component {
+    //     constructor(props) {
+    //       super(props);
+    //       this.state = {isToggleOn: true};
 
-          // 为了在回调中使用 `this`，这个绑定是必不可少的
-          this.handleClick = this.handleClick.bind(this);
+    //       // 为了在回调中使用 `this`，这个绑定是必不可少的
+    //       this.handleClick = this.handleClick.bind(this);
+    //     }
+
+    //     handleClick() {
+    //       this.setState(state => ({
+    //         isToggleOn: !state.isToggleOn
+    //       }));
+    //     } // 箭头函数的主要目的是能够根据 state 的当前状态做改变，如果是常量则不需要箭头函数
+
+    //     render() {
+    //       return (
+    //         <button onClick={this.handleClick}>
+    //           {this.state.isToggleOn ? 'ON' : 'OFF'}
+    //         </button>
+    //       );
+    //     }
+    // }
+
+    // class LoggingButton extends React.Component {
+    //   constructor(props) {
+    //       super(props);
+    //       this.state = {counter: 1};
+    //     }
+    //   // 此语法确保 `handleClick` 内的 `this` 已被绑定。
+    //   // 注意: 这是 *实验性* 语法。
+    //   handleClick = (con) => {
+    //     this.setState({
+    //       counter: this.state.counter + con
+    //     });
+    //   }
+
+    //   render() {
+    //     return (
+    //       <button onClick={this.handleClick.bind(this, 2)}> 
+    //         {this.state.counter}
+    //       </button>
+    //     );
+    //   }
+    // }
+
+    // ReactDOM.render(
+    //   <div>
+    //     <h1>public class fields 语法 绑定方法，然后通过 bind 方式传递参数</h1>
+    //     <LoggingButton />
+    //     <h1>bind 方式绑定方法</h1>
+    //     <Toggle />
+    //   </div>,
+    //   document.getElementById('root')
+    // );
+
+    // 条件渲染
+    function UserGreeting(props) {
+      return <h1>Welcome back!</h1>;
+    }
+
+    function GuestGreeting(props) {
+      return <h1>Please sign up.</h1>;
+    }
+
+    // Greeting 组件根据 登陆状态来渲染对应的 Greeting
+    function Greeting(props) {
+        const isLoggedIn = props.isLoggedIn;
+        if (isLoggedIn) {
+            return <UserGreeting />;
+        } else {
+            return <GuestGreeting />;
+        }
+    }
+
+    function LogButton(props){
+        return (
+            <button onClick={props.onClick}>
+                {props.name}
+            </button>
+        );
+    }
+
+    class LoginControl extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                isLoggedIn: false,
+            };
+            this.handleLoginClick = this.handleLoginClick.bind(this);
+            this.handleLogoutClick = this.handleLogoutClick.bind(this);
         }
 
-        handleClick() {
-          this.setState(state => ({
-            isToggleOn: !state.isToggleOn
-          }));
+        handleLoginClick() {
+            this.setState({isLoggedIn: true});
+        }
+
+        handleLogoutClick() {
+            this.setState({isLoggedIn: false});
         }
 
         render() {
-          return (
-            <button onClick={this.handleClick}>
-              {this.state.isToggleOn ? 'ON' : 'OFF'}
-            </button>
-          );
-        }
-    }
+            let button;
 
-    class LoggingButton extends React.Component {
-      constructor(props) {
-          super(props);
-          this.state = {counter: 1};
-        }
-      // 此语法确保 `handleClick` 内的 `this` 已被绑定。
-      // 注意: 这是 *实验性* 语法。
-      handleClick = (con) => {
-        this.setState({
-          counter: this.state.counter + con
-        });
-      }
+            if (this.state.isLoggedIn) {
+                button = <LogButton name="Logout" onClick={this.handleLogoutClick} />;
+            } else {
+                button = <LogButton name="Login" onClick={this.handleLoginClick} />;
+            }
 
-      render() {
-        return (
-          <button onClick={this.handleClick.bind(this, 2)}> 
-            {this.state.counter}
-          </button>
-        );
-      }
+            return (
+                <div>
+                    <Greeting isLoggedIn={this.state.isLoggedIn} />
+                    {button}
+                </div>
+            );
+        }
     }
 
     ReactDOM.render(
-      <div>
-        <h1>public class fields 语法 绑定方法，然后通过 bind 方式传递参数</h1>
-        <LoggingButton />
-        <h1>bind 方式绑定方法</h1>
-        <Toggle />
-      </div>,
+      <LoginControl />,
       document.getElementById('root')
     );
 
